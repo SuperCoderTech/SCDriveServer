@@ -1,0 +1,6 @@
+Flask
+flask_cors  # need when gets cors erros
+dnspython
+PyJWT
+pillow
+
