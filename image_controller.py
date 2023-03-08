@@ -40,9 +40,22 @@ def getImageByFolder(user):
 @image_con.route('/send_image', methods=['GET'])
 @token_required
 def send_images(user):
+    thumb = request.args["thumb"]
     path = request.args["path"]
     upath = user["upath"]
     file_path, name = image_handler.get_full_path(upath, path) 
     print(file_path)
     print(name)
+    if thumb is not None and thumb == "true":
+        file_path += "/.thumbnail"
     return send_from_directory(file_path, name)
+
+
+@image_con.route('/delete_image', methods=['GET'])
+@token_required
+def delete_image(user):
+    path = request.args["path"]
+    upath = user["upath"]
+    print(path)
+    print(upath)
+    return image_handler.remove_file(upath, path) 
