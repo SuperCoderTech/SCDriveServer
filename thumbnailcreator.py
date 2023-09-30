@@ -19,8 +19,8 @@ def create_thumbnail(path, file):
     print(file + " thumnail created ")
 
 
-def create_thumbnail_for_all():
-    images = image_handler.get_all_images("MRB")
+def create_thumbnail_for_all(username):
+    images = image_handler.get_all_images(username)
     print(len(images))
     for i in images:
         try:

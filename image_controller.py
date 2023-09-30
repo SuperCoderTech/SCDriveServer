@@ -6,19 +6,19 @@ from authentication import token_required
 image_con = Blueprint('image_con', __name__)
 
 
-@image_con.route("/saveImage", methods=['POST'])
-@token_required
-def saveImage(user):
-    try:
-        user_id = user['upath']
-        print(user_id)
-        print(request.files)
-        file = request.files['file_field']
-        update_url = image_handler.save_image(user_id, file)
-        return {"update_img_url": update_url}
-    except Exception as e:
-        print(e)
-    return {"error": "Internal Error Occured"}
+# @image_con.route("/saveImage", methods=['POST'])
+# @token_required
+# def saveImage(user):
+#     try:
+#         user_id = user['upath']
+#         print(user_id)
+#         print(request.files)
+#         file = request.files['file_field']
+#         update_url = image_handler.save_image(user_id, file)
+#         return {"update_img_url": update_url}
+#     except Exception as e:
+#         print(e)
+#     return {"error": "Internal Error Occured"}
 
 
 @image_con.route("/getAllData", methods=['GET'])
@@ -59,3 +59,21 @@ def delete_image(user):
     print(path)
     print(upath)
     return image_handler.remove_file(upath, path) 
+
+
+
+@image_con.route("/saveImage",  methods=['POST'])
+@token_required
+def saveImage(user):
+    try:
+        path = request.args['folder']
+        print(path)
+        upath = user["upath"]
+        print(upath)
+        print(request.files)
+        file = request.files['file_field']
+        update_url = image_handler.save_image(upath, path, file)
+        return {"update_img_url": update_url}
+    except Exception as e:
+        print(e)
+    return {"error": "Internal Error Occured"}

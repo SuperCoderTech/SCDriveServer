@@ -9,6 +9,11 @@ UPLOAD_FOLDER = '/home/dietpi/Mine'
 TRASH_FOLDER = '/home/dietpi/.Trash/'
 
 
+def set_upload_folder(folder):
+    global UPLOAD_FOLDER
+    UPLOAD_FOLDER = folder
+
+
 def save_image(base_folder, file):
     try:
         path = os.path.join(UPLOAD_FOLDER, base_folder)
@@ -36,6 +41,7 @@ def get_all_images(upath):
 
 def get_all_folders_and_images(upath):
     resp = []
+    print(UPLOAD_FOLDER)
     my_folder = os.path.join(UPLOAD_FOLDER, upath)
     for root, dirs, files in os.walk(my_folder):
         for dirc in dirs:
@@ -55,6 +61,7 @@ def get_all_folders_and_images(upath):
 
 
 def get_all_files_in_folder(upath, path):
+    print(UPLOAD_FOLDER)
     my_folder = os.path.join(UPLOAD_FOLDER, upath)
     if path is not None:
         my_folder = os.path.join(my_folder, path)
@@ -92,6 +99,23 @@ def remove_file(upath, path):
     os.remove(thumbnail)
     shutil.move(file_path, TRASH_FOLDER)
     return "removed"
+
+
+def save_image(upath, path, file):
+    try:
+        print(file.filename)
+        path = os.path.join(UPLOAD_FOLDER, upath, path)
+        print(path)
+        isExist = os.path.exists(path)
+        if not isExist:
+            os.makedirs(path)
+        path = os.path.join(path, file.filename)
+        file.save(path)
+        print(path)
+        return path
+    except Exception as e:
+        print(e)
+    return None
 
 
 if __name__ == "__main__":
