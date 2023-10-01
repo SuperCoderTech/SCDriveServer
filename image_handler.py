@@ -52,6 +52,9 @@ def get_all_folders_and_images(upath):
             if file.lower().endswith(".jpg") or file.lower().endswith(".png"):
                 resp.append({"path": os.path.join(
                     root[len(my_folder):], file), "type": "image"})
+            elif file.lower().endswith(".mp4"):
+                resp.append({"path": os.path.join(
+                    root[len(my_folder):], file), "type": "video"})
             else:
                 resp.append({"path": os.path.join(
                     root[len(my_folder):], file), "type": "file"})
