@@ -5,6 +5,9 @@ import jwt
 from flask import request, make_response, jsonify
 
 from flask import current_app as app
+import logging
+
+logging.basicConfig(filename='example.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 def token_required(f):
@@ -19,6 +22,7 @@ def token_required(f):
         try:
             data = jwt.decode(token, app.config.get('secret_key'), algorithms=['HS256'])
             user = data['user']
+            logging.info(user)
         except:
             return make_response(jsonify({"message": "Invalid token!"}), 401)
         return f(user, *args, **kwargs)
@@ -32,8 +36,8 @@ def encode_auth_token(user):
     :return: string
     """
 
-    print("secret key ::" + app.config.get('secret_key'))
-    print("user :: " + str(user))
+    logging.info("secret key ::" + app.config.get('secret_key'))
+    logging.info("user :: " + str(user))
     try:
         payload = {
             'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1, seconds=5),
@@ -41,7 +45,7 @@ def encode_auth_token(user):
             'user': user
         }
 
-        print("payload ::" + str(payload))
+        logging.info("payload ::" + str(payload))
 
         return jwt.encode(
             payload,
